@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Profiles</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+</head>
+
+<body>
+    <h1>Our Team</h1>
+
+    <!-- Section where staff profiles will be displayed -->
+    <div id="staffProfiles"></div>
+
+    <script>
+        // Function to fetch staff profiles from the backend
+        async function fetchStaffProfiles() {
+            try {
+                const response = await fetch('http://localhost:5000/api/staff'); // Replace with your API URL
+                const staffData = await response.json(); // Get JSON response
+
+                displayStaffProfiles(staffData); // Call function to display staff profiles
+            } catch (error) {
+                console.error('Error fetching staff profiles:', error);
+            }
+        }
+
+        // Function to display staff profiles on the page
+        function displayStaffProfiles(staffData) {
+            const staffProfilesContainer = document.getElementById('staffProfiles');
+            staffProfilesContainer.innerHTML = ''; // Clear existing profiles
+
+            // Loop through each staff member and create HTML for their profile
+            staffData.forEach(staff => {
+                const profileHTML = `
+          <div class="staff-profile">
+            <img src="http://localhost:5000/uploads/${staff.image}" alt="${staff.name}'s profile image">
+            <h3>${staff.name}</h3>
+            <p>Position: ${staff.position}</p>
+            <p>${staff.bio}</p>
+            <p>Email: <a href="mailto:${staff.email}">${staff.email}</a></p>
+            <div class="social-media">
+              ${staff.socialMedia.linkedin ? `<a href="${staff.socialMedia.linkedin}" target="_blank">LinkedIn</a>` : ''}
+              ${staff.socialMedia.twitter ? `<a href="${staff.socialMedia.twitter}" target="_blank">Twitter</a>` : ''}
+            </div>
+          </div>
+        `;
+                staffProfilesContainer.innerHTML += profileHTML; // Add each profile to the container
+            });
+        }
+
+        // Fetch and display staff profiles when the page loads
+        window.onload = fetchStaffProfiles;
+    </script>
+</body>
+
+
+
+<!-- In your index.html or main page -->
+<a href="staff.html">Meet Our Team</a>
+
+
+</html>
