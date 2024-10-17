@@ -50,7 +50,7 @@
 
 <script>
     async function loadStaff() {
-        const response = await fetch('http://localhost:5000/api/staff');
+        const response = await fetch('http://pacific-reef-07582.herokuapp.com/api/staff');
         const staffList = await response.json();
 
         let staffHTML = '';
@@ -70,6 +70,15 @@
 
     loadStaff();
 </script>
+
+const response = await fetch('https://your-heroku-app-name.herokuapp.com/api/staff', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(data),
+});
+
 
 <!-- In your index.html or main page -->
 <a href="staff.html">Meet Our Team</a>
