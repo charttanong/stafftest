@@ -1,0 +1,75 @@
+<form id="addStaffForm" enctype="multipart/form-data">
+    <div>
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+    </div>
+    <div>
+        <label for="position">Position:</label>
+        <input type="text" id="position" name="position" required>
+    </div>
+    <div>
+        <label for="bio">Bio:</label>
+        <textarea id="bio" name="bio"></textarea>
+    </div>
+    <div>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email">
+    </div>
+    <div>
+        <label for="linkedin">LinkedIn:</label>
+        <input type="url" id="linkedin" name="linkedin">
+    </div>
+    <div>
+        <label for="twitter">Twitter:</label>
+        <input type="url" id="twitter" name="twitter">
+    </div>
+    <div>
+        <label for="image">Profile Image:</label>
+        <input type="file" id="image" name="image">
+    </div>
+    <button type="submit">Add Staff</button>
+</form>
+
+<script>
+    document.getElementById('addStaffForm').addEventListener('submit', async function (event) {
+        event.preventDefault();
+
+        const formData = new FormData(this);
+
+        const response = await fetch('http://localhost:5000/api/staff', {
+            method: 'POST',
+            body: formData
+        });
+
+        const result = await response.json();
+        alert(result.message);
+    });
+</script>
+
+<section id="staffSection"></section>
+
+<script>
+    async function loadStaff() {
+        const response = await fetch('http://localhost:5000/api/staff');
+        const staffList = await response.json();
+
+        let staffHTML = '';
+        staffList.forEach(staff => {
+            staffHTML += `
+        <div class="staff">
+          <img src="http://localhost:5000/uploads/${staff.image}" alt="${staff.name}">
+          <h3>${staff.name}</h3>
+          <p>${staff.position}</p>
+          <p>${staff.bio}</p>
+        </div>
+      `;
+        });
+
+        document.getElementById('staffSection').innerHTML = staffHTML;
+    }
+
+    loadStaff();
+</script>
+
+<!-- In your index.html or main page -->
+<a href="staff.html">Meet Our Team</a>
