@@ -25,7 +25,7 @@
     </div>
     <div>
         <label for="image">Profile Image:</label>
-        <input type="file" id="image" name="image">
+        <input type="file" id="image" name="image" required> <!-- Add required for image upload -->
     </div>
     <button type="submit">Add Staff</button>
 </form>
@@ -36,7 +36,8 @@
 
         const formData = new FormData(this);
 
-        const response = await fetch('http://localhost:5000/api/staff', {
+        // Use the correct URL for your Heroku app
+        const response = await fetch('https://pacific-reef-07582.herokuapp.com/api/staff', {
             method: 'POST',
             body: formData
         });
@@ -50,19 +51,20 @@
 
 <script>
     async function loadStaff() {
-        const response = await fetch('http://pacific-reef-07582.herokuapp.com/api/staff');
+        // Use the correct URL for your Heroku app
+        const response = await fetch('https://pacific-reef-07582.herokuapp.com/api/staff');
         const staffList = await response.json();
 
         let staffHTML = '';
         staffList.forEach(staff => {
             staffHTML += `
-        <div class="staff">
-          <img src="http://localhost:5000/uploads/${staff.image}" alt="${staff.name}">
-          <h3>${staff.name}</h3>
-          <p>${staff.position}</p>
-          <p>${staff.bio}</p>
-        </div>
-      `;
+                <div class="staff">
+                    <img src="https://pacific-reef-07582.herokuapp.com/uploads/${staff.image}" alt="${staff.name}"> <!-- Use Heroku URL for images -->
+                    <h3>${staff.name}</h3>
+                    <p>${staff.position}</p>
+                    <p>${staff.bio}</p>
+                </div>
+            `;
         });
 
         document.getElementById('staffSection').innerHTML = staffHTML;
@@ -71,14 +73,5 @@
     loadStaff();
 </script>
 
-const response = await fetch('https://your-heroku-app-name.herokuapp.com/api/staff', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(data),
-});
-
-
-<!-- In your index.html or main page -->
+<!-- Link to the staff page -->
 <a href="staff.html">Meet Our Team</a>
